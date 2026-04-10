@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email == "trongtuan.india@gmail.com" && request.auth.token.email_verified == true);
+    }
+
+    function isValidClass(data) {
+      return data.keys().hasAll(['id', 'category', 'title', 'numClasses', 'numStudents', 'status']) &&
+             data.id is string &&
+             data.category == 'Bồi dưỡng' &&
+             data.title is string && data.title.size() < 500 &&
+             data.numClasses is number &&
+             data.numStudents is number &&
+             data.status in ['Planned', 'In Progress', 'Completed'];
+    }
+
+    match /classes/{classId} {
+      allow read: if true; // Công khai để xem báo cáo
+      allow write: if isAdmin(); // Chỉ admin mới được cập nhật
+    }
+  }
+}

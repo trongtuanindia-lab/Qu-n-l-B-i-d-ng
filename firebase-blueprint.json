@@ -1,0 +1,34 @@
+{
+  "entities": {
+    "TrainingClass": {
+      "title": "TrainingClass",
+      "description": "Thông tin lớp bồi dưỡng",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "category": { "type": "string", "enum": ["Bồi dưỡng"] },
+        "title": { "type": "string" },
+        "targetAudience": { "type": "string" },
+        "numClasses": { "type": "number" },
+        "numStudents": { "type": "number" },
+        "actualStudents": { "type": "number", "description": "Số học viên thực tế nhập học" },
+        "mode": { "type": "string", "enum": ["Tập trung", "Không tập trung", "Cả hai"] },
+        "timeframe": { "type": "string" },
+        "startDate": { "type": "string", "format": "date", "description": "Ngày khai giảng thực tế" },
+        "endDate": { "type": "string", "format": "date", "description": "Ngày bế giảng thực tế" },
+        "location": { "type": "string" },
+        "funding": { "type": "string" },
+        "status": { "type": "string", "enum": ["Planned", "In Progress", "Completed"] },
+        "subTitle": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "category", "title", "numClasses", "numStudents", "status"]
+    }
+  },
+  "firestore": {
+    "/classes/{classId}": {
+      "schema": "TrainingClass",
+      "description": "Danh sách các lớp bồi dưỡng"
+    }
+  }
+}
